@@ -48,7 +48,7 @@ const Home: NextPage = () => {
     return (
         <>
             <Comments comments={comments} setComments={setComments} />
-            <AddComment user={user} comments={comments} />
+            <AddComment user={user as User} comments={comments} />
         </>
     );
 };

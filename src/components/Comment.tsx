@@ -1,7 +1,12 @@
 import type { Comment, CommentsArray } from "../pages";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, MouseEvent, SetStateAction, useState } from "react";
+import axios from "axios";
 
 const Comments = (props: { comments: CommentsArray; setComments: Dispatch<SetStateAction<CommentsArray | []>> }) => {
+    const deleteComment = (e: MouseEvent) => {
+        axios.delete(`http://localhost:5000/comments/${(e.target as HTMLButtonElement).value}`).then(() => console.log("hecho"));
+    };
+
     const CommentTemplate = (commentObj: Comment) => {
         return (
             <div className="comment-wrapper" key={commentObj.id}>
@@ -17,7 +22,9 @@ const Comments = (props: { comments: CommentsArray; setComments: Dispatch<SetSta
                 </div>
                 <button className="reply">Reply</button>
                 <button className="edit">Edit</button>
-                <button className="delete">Delete</button>
+                <button value={commentObj.id} className="delete" onClick={e => deleteComment(e)}>
+                    Delete
+                </button>
                 <div className="content">{commentObj.content}</div>
                 {commentObj.replies?.length !== 0 && (
                     <div className="responses-wrapper">
