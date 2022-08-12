@@ -43,7 +43,16 @@ const Edit = (props: {
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="add-comment-wrapper">
             <img src={props.user.image && props.user.image.png} alt="" />
-            <textarea value={replyText} name="" id="" rows={4} placeholder={"Add a reply..."} onChange={e => setReplyText(e.target.value)}></textarea>
+            <textarea
+                value={replyText}
+                name=""
+                id=""
+                rows={4}
+                placeholder={"Add a reply..."}
+                onChange={e => setReplyText(e.target.value)}
+                onKeyDown={e => {
+                    e.key === "Enter" && postReply();
+                }}></textarea>
             <button className="send" onClick={() => postReply()}>
                 <span>UPDATE</span>
             </button>

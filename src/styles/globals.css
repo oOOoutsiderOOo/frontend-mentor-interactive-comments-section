@@ -78,6 +78,7 @@ select {
 button {
     all: unset;
     cursor: revert;
+    transition: all 0.2s;
 }
 
 :root {
@@ -317,6 +318,11 @@ textarea:focus {
     font-weight: 500;
     color: var(--clr-ntrl-white);
     cursor: pointer;
+}
+
+.modal-cancel:hover,
+.modal-delete:hover {
+    opacity: 0.5;
 }
 
 .modal-cancel {

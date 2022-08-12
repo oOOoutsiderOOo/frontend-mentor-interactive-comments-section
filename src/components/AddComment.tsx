@@ -36,7 +36,10 @@ const AddComment = (props: {
                 cols={30}
                 rows={4}
                 placeholder={"Add a comment..."}
-                onChange={e => props.setNewComment(e.target.value)}></textarea>
+                onChange={e => props.setNewComment(e.target.value)}
+                onKeyDown={e => {
+                    e.key === "Enter" && postComment();
+                }}></textarea>
             <button className="send" onClick={() => postComment()}>
                 SEND
             </button>
