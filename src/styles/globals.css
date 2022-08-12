@@ -118,7 +118,7 @@ body {
     padding: 2rem;
     display: grid;
     grid-template-columns: 100px 1.5fr 1fr;
-    grid-template-rows: 1fr 2fr;
+    grid-template-rows: 1fr 1.5fr;
 }
 
 .likes {
@@ -192,20 +192,26 @@ body {
 .edit {
     color: var(--clr-pr-blue-muted);
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .reply:hover,
 .edit:hover {
-    color: var(--clr-pr-blue-gr);
+    opacity: 0.5;
 }
 
 .delete {
     color: var(--clr-pr-red);
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .delete:hover {
-    color: var(--clr-pr-red-pl);
+    opacity: 0.5;
 }
 
 .responses-wrapper {

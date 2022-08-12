@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { User, CommentsArray } from "../pages";
 import { nanoid } from "nanoid";
+import { motion } from "framer-motion";
 
 const DoReply = (props: {
     user: User;
@@ -43,13 +44,13 @@ const DoReply = (props: {
     };
 
     return (
-        <div className="add-comment-wrapper">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="add-comment-wrapper">
             <img src={props.user.image && props.user.image.png} alt="" />
             <textarea value={replyText} name="" id="" rows={4} placeholder={"Add a reply..."} onChange={e => setReplyText(e.target.value)}></textarea>
             <button className="send" onClick={() => postReply()}>
-                <span>SEND</span>
+                <span>REPLY</span>
             </button>
-        </div>
+        </motion.div>
     );
 };
 

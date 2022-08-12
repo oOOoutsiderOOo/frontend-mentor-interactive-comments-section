@@ -1,5 +1,6 @@
+import { Dispatch, MouseEvent, SetStateAction } from "react";
 import type { Comment, CommentsArray } from "../pages";
-import { Dispatch, MouseEvent, SetStateAction, useState } from "react";
+import { motion } from "framer-motion";
 import DoReply from "./DoReply";
 import { User } from "../pages";
 
@@ -29,7 +30,7 @@ const Comments = (props: {
     const CommentTemplate = (commentObj: Comment, parentID: string = "") => {
         return (
             <div className="comment-wrapper" key={commentObj.id}>
-                <div className="comment">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="comment">
                     <div className="likes">
                         <div className="plus">
                             <img src="/images/icon-plus.svg" alt="" />
@@ -47,19 +48,30 @@ const Comments = (props: {
                     </div>
                     <div className="actions-row">
                         {commentObj.user.username !== props.user.username && (
-                            <button value={commentObj.id} className="reply" onClick={e => props.setReplyingTo((e.target as HTMLButtonElement).value)}>
+                            <button
+                                value={commentObj.id}
+                                id={commentObj.id}
+                                className="reply"
+                                onClick={e => props.setReplyingTo((e.target as HTMLButtonElement).value)}>
+                                <img src="/images/icon-reply.svg" alt="" />
                                 Reply
                             </button>
                         )}
                         {commentObj.user.username === props.user.username && (
                             <button value={commentObj.id} className="delete" onClick={e => deleteComment(e)}>
+                                <img src="/images/icon-delete.svg" alt="" />
                                 Delete
                             </button>
                         )}
-                        {commentObj.user.username === props.user.username && <button className="edit">Edit</button>}
+                        {commentObj.user.username === props.user.username && (
+                            <button className="edit">
+                                <img src="/images/icon-edit.svg" alt="" />
+                                Edit
+                            </button>
+                        )}
                     </div>
                     <div className="content">{commentObj.content}</div>
-                </div>
+                </motion.div>
                 {props.replyingTo === commentObj.id && (
                     <DoReply
                         user={props.user as User}
