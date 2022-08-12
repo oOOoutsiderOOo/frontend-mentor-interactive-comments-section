@@ -16,7 +16,7 @@ const AddComment = (props: {
         let newComment = {
             id: nanoid(10),
             content: props.newComment,
-            createdAt: "now",
+            createdAt: "Now",
             replies: [],
             score: 0,
             user: props.user,
@@ -37,7 +37,9 @@ const AddComment = (props: {
                 rows={4}
                 placeholder={"Add a comment..."}
                 onChange={e => props.setNewComment(e.target.value)}></textarea>
-            <button onClick={() => postComment()}>SEND</button>
+            <button className="send" onClick={() => postComment()}>
+                SEND
+            </button>
         </div>
     );
 };

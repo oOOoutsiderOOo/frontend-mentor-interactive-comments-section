@@ -42,16 +42,21 @@ const Comments = (props: {
                     <div className="name-row">
                         <img src={commentObj.user.image.png} alt="" />
                         <div className="name">{commentObj.user.username}</div>
+                        {commentObj.user.username === props.user.username && <div className="you">you</div>}
                         <div className="time">{commentObj.createdAt}</div>
                     </div>
                     <div className="actions-row">
-                        <button value={commentObj.id} className="reply" onClick={e => props.setReplyingTo((e.target as HTMLButtonElement).value)}>
-                            Reply
-                        </button>
-                        <button className="edit">Edit</button>
-                        <button value={commentObj.id} className="delete" onClick={e => deleteComment(e)}>
-                            Delete
-                        </button>
+                        {commentObj.user.username !== props.user.username && (
+                            <button value={commentObj.id} className="reply" onClick={e => props.setReplyingTo((e.target as HTMLButtonElement).value)}>
+                                Reply
+                            </button>
+                        )}
+                        {commentObj.user.username === props.user.username && (
+                            <button value={commentObj.id} className="delete" onClick={e => deleteComment(e)}>
+                                Delete
+                            </button>
+                        )}
+                        {commentObj.user.username === props.user.username && <button className="edit">Edit</button>}
                     </div>
                     <div className="content">{commentObj.content}</div>
                 </div>
@@ -69,9 +74,16 @@ const Comments = (props: {
                 )}
                 {commentObj.replies?.length !== 0 && (
                     <div className="responses-wrapper">
-                        {commentObj.replies?.map(reply => {
-                            return CommentTemplate(reply as Comment, commentObj.id);
-                        })}
+                        {!commentObj.replyingTo && (
+                            <div className="responses-line-container">
+                                <div className="responses-line"></div>
+                            </div>
+                        )}
+                        <div className="responses">
+                            {commentObj.replies?.map(reply => {
+                                return CommentTemplate(reply as Comment, commentObj.id);
+                            })}
+                        </div>
                     </div>
                 )}
             </div>

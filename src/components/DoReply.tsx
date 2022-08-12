@@ -20,9 +20,9 @@ const DoReply = (props: {
             id: nanoid(10),
             content: replyText === "" ? props.newComment : replyText,
             createdAt: "now",
-            replies: [],
             score: 0,
             user: props.user,
+            replyingTo: "replying to @name",
         };
         console.log(props.parentId);
         if (props.parentId === "") {
@@ -45,15 +45,10 @@ const DoReply = (props: {
     return (
         <div className="add-comment-wrapper">
             <img src={props.user.image && props.user.image.png} alt="" />
-            <textarea
-                value={replyText}
-                name=""
-                id=""
-                cols={30}
-                rows={4}
-                placeholder={"Add a reply..."}
-                onChange={e => setReplyText(e.target.value)}></textarea>
-            <button onClick={() => postReply()}>SEND</button>
+            <textarea value={replyText} name="" id="" rows={4} placeholder={"Add a reply..."} onChange={e => setReplyText(e.target.value)}></textarea>
+            <button className="send" onClick={() => postReply()}>
+                <span>SEND</span>
+            </button>
         </div>
     );
 };
