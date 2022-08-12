@@ -56,7 +56,12 @@ const DoReply = (props: {
     };
 
     return (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="add-comment-wrapper">
+        <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            transition={{ ease: "easeInOut" }}
+            className="add-comment-wrapper">
             <img src={props.user.image && props.user.image.png} alt="" />
             <textarea
                 value={replyText}

@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import type { Comment, CommentsArray } from "../pages";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import DoReply from "./DoReply";
 import { User } from "../pages";
 import Edit from "./Edit";
@@ -40,7 +40,7 @@ const Comments = (props: {
 
     const CommentTemplate = (commentObj: Comment, index: number, parentID: string = "") => {
         return (
-            <div className="comment-wrapper" key={commentObj.id}>
+            <motion.div className="comment-wrapper" key={commentObj.id}>
                 {editingId !== commentObj.id && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="comment">
                         <Likes
@@ -98,18 +98,20 @@ const Comments = (props: {
                         setEditingId={setEditingId}
                     />
                 )}
-                {props.replyingTo === commentObj.id && (
-                    <DoReply
-                        user={props.user as User}
-                        comments={props.comments}
-                        setComments={props.setComments}
-                        newComment={props.newComment}
-                        setNewComment={props.setNewComment}
-                        replyingTo={props.replyingTo}
-                        setReplyingTo={props.setReplyingTo}
-                        parentId={parentID}
-                    />
-                )}
+                <AnimatePresence>
+                    {props.replyingTo === commentObj.id && (
+                        <DoReply
+                            user={props.user as User}
+                            comments={props.comments}
+                            setComments={props.setComments}
+                            newComment={props.newComment}
+                            setNewComment={props.setNewComment}
+                            replyingTo={props.replyingTo}
+                            setReplyingTo={props.setReplyingTo}
+                            parentId={parentID}
+                        />
+                    )}
+                </AnimatePresence>
                 {commentObj.replies?.length !== 0 && (
                     <div className="responses-wrapper">
                         {!commentObj.replyingTo && (
@@ -124,30 +126,37 @@ const Comments = (props: {
                         </div>
                     </div>
                 )}
-            </div>
+            </motion.div>
         );
     };
 
     return (
         <>
-            {deletingId !== "" && (
-                <div className="modal-backdrop">
-                    <div className="modal">
-                        <h3 className="modal-title">Delete comment</h3>
-                        <p className="modal-text">
-                            {`Are you sure you want to delete this comment? This will remove the comment and can't be undone.`}
-                        </p>
-                        <div className="modal-buttons">
-                            <button className="modal-cancel" onClick={() => setDeletingId("")}>
-                                NO, CANCEL
-                            </button>
-                            <button className="modal-delete" onClick={() => deleteComment(deletingId)}>
-                                YES, DELETE
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+            <AnimatePresence>
+                {deletingId !== "" && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="modal-backdrop">
+                        <motion.div
+                            initial={{ y: -1000 }}
+                            animate={{ y: 0 }}
+                            exit={{ y: 1000 }}
+                            transition={{ ease: "anticipate" }}
+                            className="modal">
+                            <h3 className="modal-title">Delete comment</h3>
+                            <p className="modal-text">
+                                {`Are you sure you want to delete this comment? This will remove the comment and can't be undone.`}
+                            </p>
+                            <div className="modal-buttons">
+                                <button className="modal-cancel" onClick={() => setDeletingId("")}>
+                                    NO, CANCEL
+                                </button>
+                                <button className="modal-delete" onClick={() => deleteComment(deletingId)}>
+                                    YES, DELETE
+                                </button>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
             {props.comments !== undefined &&
                 props.comments.map((comment, index) => {
                     return CommentTemplate(comment, index);

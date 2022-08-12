@@ -17,7 +17,7 @@ export type Comment = {
     vote: "+" | "-" | "";
 };
 
-export type CommentsArray = Array<Comment>;
+export type CommentsArray = Comment[];
 
 const Home: NextPage = () => {
     const [comments, setComments] = useState<CommentsArray | []>([]);
