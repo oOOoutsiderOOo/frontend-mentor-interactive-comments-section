@@ -32,7 +32,6 @@ const Edit = (props: {
             let index = props.comments.findIndex(comment => {
                 return comment.id === props.parentId;
             });
-            console.log("padre" + index + "hijo" + props.index);
             console.log(comments[index].replies.splice(props.index, 1, newComment));
             localStorage.setItem("comments", JSON.stringify(comments));
         }

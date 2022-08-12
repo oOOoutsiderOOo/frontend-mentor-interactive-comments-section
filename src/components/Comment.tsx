@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import DoReply from "./DoReply";
 import { User } from "../pages";
 import Edit from "./Edit";
+import Likes from "./Likes";
 
 const Comments = (props: {
     comments: CommentsArray;
@@ -42,15 +43,7 @@ const Comments = (props: {
             <div className="comment-wrapper" key={commentObj.id}>
                 {editingId !== commentObj.id && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="comment">
-                        <div className="likes">
-                            <div className="plus">
-                                <img src="/images/icon-plus.svg" alt="" />
-                            </div>
-                            <div className="amount">{commentObj.score}</div>
-                            <div className="minus">
-                                <img src="/images/icon-minus.svg" alt="" />
-                            </div>
-                        </div>
+                        <Likes comment={commentObj} comments={props.comments} setComments={props.setComments} parentId={parentID} index={index} />
                         <div className="name-row">
                             <img src={commentObj.user.image.png} alt="" />
                             <div className="name">{commentObj.user.username}</div>
