@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { User, CommentsArray } from "../pages";
 import { nanoid } from "nanoid";
 

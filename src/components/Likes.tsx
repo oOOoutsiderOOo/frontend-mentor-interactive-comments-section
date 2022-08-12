@@ -1,6 +1,5 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { Comment, CommentsArray, User } from "../pages";
-import { motion, AnimatePresence } from "framer-motion";
 
 const Likes = (props: {
     user: User;

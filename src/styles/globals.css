@@ -192,6 +192,11 @@ body {
     align-self: flex-end;
 }
 
+.at {
+    font-weight: 500;
+    color: var(--clr-pr-blue-muted);
+}
+
 .actions-row {
     display: flex;
     align-items: center;

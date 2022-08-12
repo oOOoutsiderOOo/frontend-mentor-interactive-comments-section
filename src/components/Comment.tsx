@@ -1,4 +1,4 @@
-import { Dispatch, MouseEvent, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import type { Comment, CommentsArray } from "../pages";
 import { motion } from "framer-motion";
 import DoReply from "./DoReply";
@@ -81,7 +81,10 @@ const Comments = (props: {
                                 </button>
                             )}
                         </div>
-                        <div className="content">{commentObj.content}</div>
+                        <div className="content">
+                            <span className="at">{commentObj.replyingTo !== undefined ? `@${commentObj.replyingTo} ` : ""}</span>
+                            {commentObj.content}
+                        </div>
                     </motion.div>
                 )}
                 {editingId === commentObj.id && (
@@ -131,7 +134,9 @@ const Comments = (props: {
                 <div className="modal-backdrop">
                     <div className="modal">
                         <h3 className="modal-title">Delete comment</h3>
-                        <p className="modal-text">Are you sure you want to delete this comment? This will remove the comment and can't be undone.</p>
+                        <p className="modal-text">
+                            Are you sure you want to delete this comment? This will remove the comment and can&apost be undone.
+                        </p>
                         <div className="modal-buttons">
                             <button className="modal-cancel" onClick={() => setDeletingId("")}>
                                 NO, CANCEL

@@ -1,7 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { User, CommentsArray, Comment } from "../pages";
 import { motion } from "framer-motion";
-import { nanoid } from "nanoid";
 
 const Edit = (props: {
     user: User;

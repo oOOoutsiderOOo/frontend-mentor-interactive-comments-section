@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { User, CommentsArray } from "../pages";
 import { nanoid } from "nanoid";
 import { motion } from "framer-motion";
@@ -26,16 +26,28 @@ const DoReply = (props: {
             replyingTo: "replying to @name",
         };
         console.log(props.parentId);
+        console.log(comments);
         if (props.parentId === "") {
             let index = props.comments.findIndex(comment => {
                 return comment.id === props.replyingTo;
             });
+            newComment = {
+                ...newComment,
+                replyingTo: comments[index].user.username,
+            };
             comments[index].replies.push(newComment);
             localStorage.setItem("comments", JSON.stringify(comments));
         } else {
             let index = props.comments.findIndex(comment => {
                 return comment.id === props.parentId;
             });
+            let indexChild = props.comments[index]?.replies.findIndex(comment => {
+                return comment?.id === props.replyingTo;
+            });
+            newComment = {
+                ...newComment,
+                replyingTo: comments[index].replies[indexChild as number].user.username,
+            };
             comments[index].replies.push(newComment);
             localStorage.setItem("comments", JSON.stringify(comments));
         }
