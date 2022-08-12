@@ -135,7 +135,7 @@ const Comments = (props: {
                     <div className="modal">
                         <h3 className="modal-title">Delete comment</h3>
                         <p className="modal-text">
-                            Are you sure you want to delete this comment? This will remove the comment and can&apost be undone.
+                            {`Are you sure you want to delete this comment? This will remove the comment and can't be undone.`}
                         </p>
                         <div className="modal-buttons">
                             <button className="modal-cancel" onClick={() => setDeletingId("")}>
