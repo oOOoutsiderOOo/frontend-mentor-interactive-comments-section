@@ -31,7 +31,7 @@ Users should be able to:
 ### Links
 
 -   Solution URL: [GitHub repo](https://github.com/oOOoutsiderOOo/frontend-mentor-interactive-comments-section)
--   Live Site URL: [Vercel](https://frontend-mentor-interactive-card-deta-git-cc5103-ooooutsiderooo.vercel.app/)
+-   Live Site URL: [Vercel](https://frontend-mentor-interactive-comments-section-ooooutsiderooo.vercel.app/)
 
 ### Built with
 
