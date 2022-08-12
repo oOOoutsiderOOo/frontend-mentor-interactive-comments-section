@@ -1,8 +1,9 @@
-import { Dispatch, MouseEvent, SetStateAction } from "react";
+import { Dispatch, MouseEvent, SetStateAction, useState } from "react";
 import type { Comment, CommentsArray } from "../pages";
 import { motion } from "framer-motion";
 import DoReply from "./DoReply";
 import { User } from "../pages";
+import Edit from "./Edit";
 
 const Comments = (props: {
     comments: CommentsArray;
@@ -14,64 +15,86 @@ const Comments = (props: {
     replyingTo: string;
     parentId?: string;
 }) => {
-    const deleteComment = (e: MouseEvent) => {
-        const newComments = props.comments.filter(comment => comment.id !== (e.target as HTMLButtonElement).value);
+    const [editingId, setEditingId] = useState("");
+    const [deletingId, setDeletingId] = useState("");
+
+    const deleteComment = (id: string) => {
+        const newComments = props.comments.filter(comment => comment.id !== id);
         const newCommentsAndReplies = newComments.map(comment => {
             if (comment.replies.length !== 0) {
-                let newReplies: Array<any> = comment.replies.filter(reply => reply?.id !== (e.target as HTMLButtonElement).value);
+                let newReplies: Array<any> = comment.replies.filter(reply => reply?.id !== id);
                 comment.replies = newReplies as [(Comment | undefined)?];
             }
             return comment;
         });
         localStorage.setItem("comments", JSON.stringify(newCommentsAndReplies));
         props.setComments(newCommentsAndReplies);
+        setDeletingId("");
     };
 
-    const CommentTemplate = (commentObj: Comment, parentID: string = "") => {
+    const handleReplyButton = (value: string) => {
+        value == props.replyingTo ? props.setReplyingTo("") : props.setReplyingTo(value);
+        setEditingId("");
+    };
+
+    const CommentTemplate = (commentObj: Comment, index: number, parentID: string = "") => {
         return (
             <div className="comment-wrapper" key={commentObj.id}>
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="comment">
-                    <div className="likes">
-                        <div className="plus">
-                            <img src="/images/icon-plus.svg" alt="" />
+                {editingId !== commentObj.id && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="comment">
+                        <div className="likes">
+                            <div className="plus">
+                                <img src="/images/icon-plus.svg" alt="" />
+                            </div>
+                            <div className="amount">{commentObj.score}</div>
+                            <div className="minus">
+                                <img src="/images/icon-minus.svg" alt="" />
+                            </div>
                         </div>
-                        <div className="amount">{commentObj.score}</div>
-                        <div className="minus">
-                            <img src="/images/icon-minus.svg" alt="" />
+                        <div className="name-row">
+                            <img src={commentObj.user.image.png} alt="" />
+                            <div className="name">{commentObj.user.username}</div>
+                            {commentObj.user.username === props.user.username && <div className="you">you</div>}
+                            <div className="time">{commentObj.createdAt}</div>
                         </div>
-                    </div>
-                    <div className="name-row">
-                        <img src={commentObj.user.image.png} alt="" />
-                        <div className="name">{commentObj.user.username}</div>
-                        {commentObj.user.username === props.user.username && <div className="you">you</div>}
-                        <div className="time">{commentObj.createdAt}</div>
-                    </div>
-                    <div className="actions-row">
-                        {commentObj.user.username !== props.user.username && (
-                            <button
-                                value={commentObj.id}
-                                id={commentObj.id}
-                                className="reply"
-                                onClick={e => props.setReplyingTo((e.target as HTMLButtonElement).value)}>
-                                <img src="/images/icon-reply.svg" alt="" />
-                                Reply
-                            </button>
-                        )}
-                        {commentObj.user.username === props.user.username && (
-                            <button value={commentObj.id} className="delete" onClick={e => deleteComment(e)}>
-                                <img src="/images/icon-delete.svg" alt="" />
-                                Delete
-                            </button>
-                        )}
-                        {commentObj.user.username === props.user.username && (
-                            <button className="edit">
-                                <img src="/images/icon-edit.svg" alt="" />
-                                Edit
-                            </button>
-                        )}
-                    </div>
-                    <div className="content">{commentObj.content}</div>
-                </motion.div>
+                        <div className="actions-row">
+                            {commentObj.user.username !== props.user.username && (
+                                <button
+                                    value={commentObj.id}
+                                    id={commentObj.id}
+                                    className="reply"
+                                    onClick={e => handleReplyButton((e.target as HTMLButtonElement).value)}>
+                                    <img src="/images/icon-reply.svg" alt="" />
+                                    Reply
+                                </button>
+                            )}
+                            {commentObj.user.username === props.user.username && (
+                                <button value={commentObj.id} className="delete" onClick={e => setDeletingId((e.target as HTMLButtonElement).value)}>
+                                    <img src="/images/icon-delete.svg" alt="" />
+                                    Delete
+                                </button>
+                            )}
+                            {commentObj.user.username === props.user.username && (
+                                <button value={commentObj.id} className="edit" onClick={e => setEditingId((e.target as HTMLButtonElement).value)}>
+                                    <img src="/images/icon-edit.svg" alt="" />
+                                    Edit
+                                </button>
+                            )}
+                        </div>
+                        <div className="content">{commentObj.content}</div>
+                    </motion.div>
+                )}
+                {editingId === commentObj.id && (
+                    <Edit
+                        user={props.user as User}
+                        comments={props.comments}
+                        setComments={props.setComments}
+                        parentId={parentID}
+                        commentToEdit={commentObj}
+                        index={index}
+                        setEditingId={setEditingId}
+                    />
+                )}
                 {props.replyingTo === commentObj.id && (
                     <DoReply
                         user={props.user as User}
@@ -92,8 +115,8 @@ const Comments = (props: {
                             </div>
                         )}
                         <div className="responses">
-                            {commentObj.replies?.map(reply => {
-                                return CommentTemplate(reply as Comment, commentObj.id);
+                            {commentObj.replies?.map((reply, index) => {
+                                return CommentTemplate(reply as Comment, index, commentObj.id);
                             })}
                         </div>
                     </div>
@@ -104,9 +127,25 @@ const Comments = (props: {
 
     return (
         <>
+            {deletingId !== "" && (
+                <div className="modal-backdrop">
+                    <div className="modal">
+                        <h3 className="modal-title">Delete comment</h3>
+                        <p className="modal-text">Are you sure you want to delete this comment? This will remove the comment and can't be undone.</p>
+                        <div className="modal-buttons">
+                            <button className="modal-cancel" onClick={() => setDeletingId("")}>
+                                NO, CANCEL
+                            </button>
+                            <button className="modal-delete" onClick={() => deleteComment(deletingId)}>
+                                YES, DELETE
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
             {props.comments !== undefined &&
-                props.comments.map(comment => {
-                    return CommentTemplate(comment);
+                props.comments.map((comment, index) => {
+                    return CommentTemplate(comment, index);
                 })}
         </>
     );
