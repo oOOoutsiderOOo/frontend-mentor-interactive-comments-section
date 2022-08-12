@@ -14,6 +14,7 @@ export type Comment = {
     replyingTo?: string;
     score: number;
     user: User;
+    vote: "+" | "-" | "";
 };
 
 export type CommentsArray = Array<Comment>;

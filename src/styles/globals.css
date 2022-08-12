@@ -83,7 +83,7 @@ button {
 
 :root {
     --clr-pr-blue: hsl(238, 100%, 50%);
-    --clr-pr-blue-muted: hsl(238 40% 52%);
+    --clr-pr-blue-muted: hsl(238, 40%, 52%);
     --clr-pr-red: hsl(358, 79%, 66%);
     --clr-pr-blue-gr: hsl(239, 57%, 85%);
     --clr-pr-red-pl: hsl(357, 100%, 86%);
@@ -144,6 +144,17 @@ body {
     justify-content: center;
     padding: 1rem;
     cursor: pointer;
+}
+
+.plus:hover,
+.minus:hover {
+    filter: brightness(0) saturate(100%) invert(34%) sepia(14%) saturate(2464%) hue-rotate(200deg) brightness(102%) contrast(92%);
+}
+
+.already-voted,
+.already-voted:hover {
+    cursor: default;
+    filter: brightness(0) saturate(100%) invert(34%) sepia(14%) saturate(2464%) hue-rotate(200deg) brightness(102%) contrast(92%);
 }
 
 .name-row {

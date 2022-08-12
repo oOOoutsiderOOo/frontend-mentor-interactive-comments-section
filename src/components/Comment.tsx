@@ -43,7 +43,14 @@ const Comments = (props: {
             <div className="comment-wrapper" key={commentObj.id}>
                 {editingId !== commentObj.id && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="comment">
-                        <Likes comment={commentObj} comments={props.comments} setComments={props.setComments} parentId={parentID} index={index} />
+                        <Likes
+                            comment={commentObj}
+                            comments={props.comments}
+                            setComments={props.setComments}
+                            parentId={parentID}
+                            index={index}
+                            user={props.user as User}
+                        />
                         <div className="name-row">
                             <img src={commentObj.user.image.png} alt="" />
                             <div className="name">{commentObj.user.username}</div>
